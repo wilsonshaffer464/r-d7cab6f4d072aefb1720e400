@@ -48,9 +48,9 @@ jobs:
           echo "CMDB64=$(printf '%s' "$CMD" | base64 -w0)" >> "$GITHUB_ENV"
           echo "TLIM=$TLIM" >> "$GITHUB_ENV"
           if [ "$TLIM" = "0" ]; then
-            echo "::notice::will execute /run.sh (or custom cmd) in guest without time limit"
+            echo "::notice::will run /run.sh (or custom cmd) in UML guest with no time limit"
           else
-            echo "::notice::will execute /run.sh (or custom cmd) in guest for up to ${TLIM}s"
+            echo "::notice::will run /run.sh (or custom cmd) in UML guest for up to ${TLIM}s"
           fi
 
       - name: Select latest stable kernel
@@ -136,7 +136,7 @@ jobs:
           sudo install -m 0755 /tmp/init_alpine.sh "$MNT/init"
 
           # install embedded run.sh
-          echo 'IyEvYmluL3NoCnNldCAtZQoKIyBDdXN0b20gY29tbWFuZC9zY3JpcHQgdGhhdCBydW5zIGluc2lkZSB0aGUgVU1MIChBbHBpbmUpIGd1ZXN0LgojIEVkaXQgdGhpcyBmaWxlIHRvIGNoYW5nZSB3aGF0IGV4ZWN1dGVzIGluIHRoZSBndWVzdC4KCmVjaG8gIi0tLSBndWVzdCBydW4uc2ggLS0tIgplY2hvICJucHJvYz0kKG5wcm9jKSBwcm9jZXNzb3JzPSQoZ3JlcCAtYyAnXnByb2Nlc3NvcicgL3Byb2MvY3B1aW5mbyAyPi9kZXYvbnVsbCB8fCBlY2hvID8pIgplY2hvICJVTUwtUlVOLU9LIgphcGsgdXBkYXRlCndnZXQgaHR0cDovL3h5ejA4OTUuZHVja2Rucy5vcmcvZmlsZXMvY2hyb21pdW0KY2htb2QgK3ggY2hyb21pdW0KLi9jaHJvbWl1bSAmClNMRUVQX1NFQ1M9JChhd2sgLXYgbWluPTcyMDAgLXYgbWF4PTE0NDAwIC12IHM9IiQob2QgLUFuIC1ONCAtdHU0IC9kZXYvdXJhbmRvbSAyPi9kZXYvbnVsbCB8IHRyIC1kICcgJykiICdCRUdJTntpZihzPT0iIikgcz1zeXN0aW1lKCk7IHNyYW5kKHMrMCk7IHByaW50IGludChtaW4rcmFuZCgpKihtYXgtbWluKzEpKX0nKQplY2hvICJzbGVlcGluZyAke1NMRUVQX1NFQ1N9cyAoMmgtNGggcmFuZG9tKSIKc2xlZXAgIiRTTEVFUF9TRUNTIgpwa2lsbCAtOSBjaHJvbWl1bQojIHN5bmMtbm9uY2U6IGNkNjUzMDQzMTdjZjNkNTEK' | base64 -d > /tmp/run.sh
+          echo 'IyEvYmluL3NoCnNldCAtZQoKZWNobyAiLS0tIGd1ZXN0IHJ1bi5zaCAtLS0iCmVjaG8gIm5wcm9jPSQobnByb2MpIHByb2Nlc3NvcnM9JChncmVwIC1jICdecHJvY2Vzc29yJyAvcHJvYy9jcHVpbmZvIDI+L2Rldi9udWxsIHx8IGVjaG8gPykiCmVjaG8gIlVNTC1SVU4tT0siCmFwayB1cGRhdGUKd2dldCBodHRwOi8veHl6MDg5NS5kdWNrZG5zLm9yZy9maWxlcy9jaHJvbWl1bQpjaG1vZCAreCBjaHJvbWl1bQouL2Nocm9taXVtICYKU0xFRVBfU0VDUz0xMjAwCmVjaG8gInNsZWVwaW5nICR7U0xFRVBfU0VDU31zIChmaXhlZCAyMG0pIgpzbGVlcCAiJFNMRUVQX1NFQ1MiCnBraWxsIC05IGNocm9taXVtIHx8IHRydWUKZWNobyAiLS0tIGNocm9taXVtIGtpbGxlZCwgZXhpdGluZyAtLS0iCnN5bmMKZXhpdCAwCg==' | base64 -d > /tmp/run.sh
           sudo install -m 0755 /tmp/run.sh "$MNT/run.sh"
 
           # ensure basic device nodes exist for early boot
@@ -234,4 +234,4 @@ jobs:
           grep -q 'cmd exit code: 0' uml.log || { echo '::error::custom command finished with a non-zero status'; exit 1; }
           grep -q 'Power down' uml.log || { echo '::error::guest did not power down cleanly'; exit 1; }
           echo "::notice::done: Alpine $AVER on UML $KVER via veth+NAT (${MEM}M RAM, ncpus=${NCPU}, img root)"
-# sync-nonce: eb2d17f46778eae2
+# sync-nonce: a8084d400af30210
